@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гра «21»</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game">
+        <h1>Гра «21»</h1>
+        <h2>Користувач vs Комп’ютер</h2>
+
+        <div class="players">
+            <div class="player" id="player">
+                <h3 id="playerName">Гравець</h3>
+                <p class="card" id="playerCard">?</p>
+                <p>Очки: <span id="playerScore">0</span></p>
+            </div>
+
+            <div class="player" id="computer">
+                <h3>Комп’ютер</h3>
+                <p class="card" id="computerCard">?</p>
+                <p>Очки: <span id="computerScore">0</span></p>
+            </div>
+        </div>
+
+        <p id="round">Раунд: 0 / 3</p>
+        <p id="result">Натисніть кнопку, щоб почати гру!</p>
+
+        <button id="playButton">Наступний раунд</button>
+
+        <h3 id="winner"></h3>
+    </div>
+
+    <script>
+        let playerName = "";
+
+        while (true) {
+            let name = prompt("Введіть своє ім’я:");
+
+            if (name === null) {
+                playerName = "Гравець";
+                break;
+            }
+
+            name = name.trim();
+
+            if (name !== "") {
+                playerName = name;
+                break;
+            }
+
+            alert("Ім’я не може бути порожнім!");
+        }
+
+        document.getElementById("playerName").textContent = playerName;
+
+        const cards = [
+            { name: "6", points: 6 },
+            { name: "7", points: 7 },
+            { name: "8", points: 8 },
+            { name: "9", points: 9 },
+            { name: "10", points: 10 },
+            { name: "Валет", points: 2 },
+            { name: "Дама", points: 3 },
+            { name: "Король", points: 4 },
+            { name: "Туз", points: 11 }
+        ];
+
+        let playerScore = 0;
+        let computerScore = 0;
+        let round = 0;
+
+        const playButton = document.getElementById("playButton");
+
+        playButton.addEventListener("click", function() {
+
+            if (round >= 3) {
+                return;
+            }
+
+            round++;
+
+            let playerCard = cards[Math.floor(Math.random() * cards.length)];
+            let computerCard = cards[Math.floor(Math.random() * cards.length)];
+
+            document.getElementById("playerCard").textContent =
+                playerCard.name + " (" + playerCard.points + ")";
+
+            document.getElementById("computerCard").textContent =
+                computerCard.name + " (" + computerCard.points + ")";
+
+            playerScore += playerCard.points;
+            computerScore += computerCard.points;
+
+            document.getElementById("playerScore").textContent = playerScore;
+            document.getElementById("computerScore").textContent = computerScore;
+            document.getElementById("round").textContent = "Раунд: " + round + " / 3";
+
+            let result = document.getElementById("result");
+            let player = document.getElementById("player");
+            let computer = document.getElementById("computer");
+
+            player.style.backgroundColor = "#e8eaf6";
+            computer.style.backgroundColor = "#e8eaf6";
+
+            if (playerCard.points > computerCard.points) {
+                result.textContent = playerName + " переміг у цьому раунді!";
+                player.style.backgroundColor = "#c8e6c9";
+            }
+            else if (computerCard.points > playerCard.points) {
+                result.textContent = "Комп’ютер переміг у цьому раунді!";
+                computer.style.backgroundColor = "#ffcdd2";
+            }
+            else {
+                result.textContent = "Нічия у цьому раунді!";
+            }
+
+            if (round === 3) {
+
+                if (playerScore > computerScore) {
+                    document.getElementById("winner").textContent =
+                        "Переможець гри: " + playerName + "!";
+                    player.style.backgroundColor = "#a5d6a7";
+                }
+                else if (computerScore > playerScore) {
+                    document.getElementById("winner").textContent =
+                        "Переможець гри: Комп’ютер!";
+                    computer.style.backgroundColor = "#ef9a9a";
+                }
+                else {
+                    document.getElementById("winner").textContent =
+                        "Гра завершилася нічиєю!";
+                }
+
+                playButton.disabled = true;
+            }
+        });
+    </script>
+
+</body>
+</html>

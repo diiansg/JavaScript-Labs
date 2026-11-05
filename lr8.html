@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гра «Більше число»</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game">
+        <h1>Гра «Більше число»</h1>
+        <h2>Користувач vs Комп’ютер</h2>
+
+        <div class="players">
+            <div class="player">
+                <h3 id="playerName">Гравець</h3>
+                <p id="playerNumber">?</p>
+                <p>Перемоги: <span id="playerScore">0</span></p>
+            </div>
+
+            <div class="player">
+                <h3>Комп’ютер</h3>
+                <p id="computerNumber">?</p>
+                <p>Перемоги: <span id="computerScore">0</span></p>
+            </div>
+        </div>
+
+        <p id="result">Натисніть кнопку, щоб почати гру!</p>
+
+        <button id="playButton">Зіграти раунд</button>
+
+        <p id="winner"></p>
+    </div>
+
+    <script>
+        let playerName = "";
+
+        while (true) {
+            let name = prompt("Введіть своє ім’я:");
+
+            if (name === null) {
+                playerName = "Гравець";
+                break;
+            }
+
+            name = name.trim();
+
+            if (name !== "") {
+                playerName = name;
+                break;
+            }
+
+            alert("Ім’я не може бути порожнім!");
+        }
+
+        document.getElementById("playerName").textContent = playerName;
+
+        let playerScore = 0;
+        let computerScore = 0;
+
+        const playButton = document.getElementById("playButton");
+
+        playButton.addEventListener("click", function() {
+
+            if (playerScore === 3 || computerScore === 3) {
+                return;
+            }
+
+            let playerNumber = Math.floor(Math.random() * 100) + 1;
+            let computerNumber = Math.floor(Math.random() * 100) + 1;
+
+            document.getElementById("playerNumber").textContent = playerNumber;
+            document.getElementById("computerNumber").textContent = computerNumber;
+
+            let result = document.getElementById("result");
+
+            if (playerNumber > computerNumber) {
+                playerScore++;
+                result.textContent = playerName + " переміг у цьому раунді!";
+            }
+            else if (computerNumber > playerNumber) {
+                computerScore++;
+                result.textContent = "Комп’ютер переміг у цьому раунді!";
+            }
+            else {
+                result.textContent = "Нічия! Бал не нараховується.";
+            }
+
+            document.getElementById("playerScore").textContent = playerScore;
+            document.getElementById("computerScore").textContent = computerScore;
+
+            if (playerScore === 3) {
+                document.getElementById("winner").textContent =
+                    "Переможець гри: " + playerName + "!";
+                playButton.disabled = true;
+            }
+            else if (computerScore === 3) {
+                document.getElementById("winner").textContent =
+                    "Переможець гри: Комп’ютер!";
+                playButton.disabled = true;
+            }
+        });
+    </script>
+
+</body>
+</html>
